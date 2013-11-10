@@ -18,11 +18,11 @@ SFTPPASS=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c12`
 PASSWORD=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c12`
 ##############
 
-echo "Enter username for site and database:"
-read USERNAME
-
 echo "Enter MySQL root password:"
 read ROOTPASS
+
+echo "Enter username for site and database:"
+read USERNAME
 
 echo "Enter domain"
 read DOMAIN
