@@ -226,11 +226,17 @@ request_terminate_timeout = 30s
 ; Available units: s(econds)(default), m(inutes), h(ours), or d(ays)
 ; Default Value: 0
 ;request_slowlog_timeout = 0
+# Если скрипт будет выполняться больше указанного времени, то отладочная информация по нему будет записана в файл "медленных" запросов
+request_slowlog_timeout = 3s
+
 
 ; The log file for slow requests
 ; Default Value: not set
 ; Note: slowlog is mandatory if request_slowlog_timeout is set
 ;slowlog = log/$pool.log.slow
+# Определяет путь к файлу "медленных" запросов (обязательный параметр, в случае определения request_slowlog_timeout)
+slowlog = @@HOME_DIR@@/log/$pool.log.slow
+
 
 ; Set open file descriptor rlimit.
 ; Default Value: system defined value
