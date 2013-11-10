@@ -235,7 +235,7 @@ request_slowlog_timeout = 3s
 ; Note: slowlog is mandatory if request_slowlog_timeout is set
 ;slowlog = log/$pool.log.slow
 # Определяет путь к файлу "медленных" запросов (обязательный параметр, в случае определения request_slowlog_timeout)
-slowlog = @@HOME_DIR@@/log/$pool.log.slow
+slowlog = @@HOME_DIR@@/logs/$pool.log.slow
 
 
 ; Set open file descriptor rlimit.
