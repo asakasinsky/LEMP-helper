@@ -11,8 +11,6 @@ PHP_FPM_INIT='/etc/init.d/php5-fpm'
 SED=`which sed`
 CURRENT_DIR=`dirname $0`
 
-# MySQL root password
-ROOTPASS='password'
 TIMEZONE='Europe/Moscow'
 
 MYSQLPASS=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c12`
@@ -22,6 +20,9 @@ PASSWORD=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c12`
 
 echo "Enter username for site and database:"
 read USERNAME
+
+echo "Enter MySQL root password:"
+read ROOTPASS
 
 echo "Enter domain"
 read DOMAIN
