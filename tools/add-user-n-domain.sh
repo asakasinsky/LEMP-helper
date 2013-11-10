@@ -18,11 +18,11 @@ SFTPPASS=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c12`
 PASSWORD=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c12`
 ##############
 
-echo "Enter MySQL root password:"
-read ROOTPASS
-
 echo "Enter username for site and database:"
 read USERNAME
+
+echo "Enter MySQL root password:"
+read ROOTPASS
 
 echo "Enter domain"
 read DOMAIN
@@ -153,6 +153,9 @@ echo "Done.
 User: $USERNAME
 Password: $PASSWORD
 SFTP password: $SFTPPASS
-Mysql password: $MYSQLPASS" > /home/$USERNAME/pass.txt
+Mysql host: 127.0.0.1
+Mysql username: $USERNAME
+Mysql password: $MYSQLPASS
+Mysql database: $USERNAME" > /home/$USERNAME/pass.txt
 
 cat /home/$USERNAME/pass.txt
