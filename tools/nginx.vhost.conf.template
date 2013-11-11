@@ -4,29 +4,28 @@ server {
     server_name @@HOSTNAME@@ www.@@HOSTNAME@@;
     root "@@PATH@@";
 
+    include     nginx-bp/bootstrap/default.conf;
+
     index index.php;
     client_max_body_size 10m;
 
     access_log @@LOG_PATH@@/access.log;
     error_log @@LOG_PATH@@/error.log;
 
-    if ($http_user_agent ~* (Baiduspider|webalta|nikto|wikto|pikto|scan|acunetix|morfeus|webcollage|youdao) ) {
-        return 401;
-    }
-
-    if ($http_user_agent ~* (HTTrack|clshttp|archiver|loader|email|harvest|extract|grab|miner) ) {
-        return 401;
-    }
-
-    if ( $http_user_agent ~* (nmap|sf|sqlmap|bsqlbf|w3af|havij|appscan) ) {
-        return 401;
-    }
+    include     nginx-bp/limits/user_agent.conf;
 
     location / {
-        try_files $uri $uri/ /index.php$uri?$args;
+        try_files $uri $uri/ @clean_url;
+    }
+
+    location @clean_url {
+        rewrite ^/(.*)$ /index.php$uri$is_args$args;
+        # rewrite ^/(.*)$ /index.php?Id=$1 last;
+        # try_files $uri $uri/ /index.php$uri?$args;
     }
 
     location ~ "^(.+\.php)($|/)" {
+    # location ~ \.php$ {
         fastcgi_split_path_info ^(.+\.php)(.*)$;
 
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
@@ -45,26 +44,36 @@ server {
         include        fastcgi_params;
     }
 
+    error_page 400 /error_pages/400.html;
+    error_page 401 /error_pages/401.html;
+    error_page 402 /error_pages/402.html;
+    error_page 403 /error_pages/403.html;
+    error_page 404 /error_pages/404.html;
+    error_page 405 /error_pages/405.html;
+    error_page 406 /error_pages/406.html;
+    error_page 407 /error_pages/407.html;
+    error_page 408 /error_pages/408.html;
+    error_page 409 /error_pages/409.html;
+    error_page 410 /error_pages/410.html;
+    error_page 411 /error_pages/411.html;
+    error_page 412 /error_pages/412.html;
+    error_page 413 /error_pages/413.html;
+    error_page 414 /error_pages/414.html;
+    error_page 415 /error_pages/415.html;
+    error_page 416 /error_pages/416.html;
+    error_page 417 /error_pages/417.html;
+    error_page 500 /error_pages/500.html;
+    error_page 501 /error_pages/501.html;
+    error_page 502 /error_pages/502.html;
+    error_page 503 /error_pages/503.html;
+    error_page 504 /error_pages/504.html;
+    error_page 505 /error_pages/505.html;
 
-    location ~* \.(js|css|json)$ {
-        expires -1;
-        log_not_found off;
-        access_log off;
-        add_header Cache-Control public;
-        add_header Access-Control-Allow-Origin *;
+    location ~ [4-5][0-9][0-9].html
+    {
+        root   "@@ERRORS_TPL_PATH@@";
+        allow all;
+        internal;
     }
 
-    location ~* \.(png|jpg|jpeg|gif|ico)$ {
-        expires max;
-        log_not_found off;
-        access_log off;
-    }
-
-    location ~* \.(html|htm)$ {
-        expires 30m;
-    }
-
-    location ~* /\.(ht|git|svn) {
-        deny  all;
-    }
 }

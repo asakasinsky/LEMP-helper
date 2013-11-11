@@ -18,11 +18,11 @@ SFTPPASS=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c12`
 PASSWORD=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c12`
 ##############
 
-echo "Enter username for site and database:"
-read USERNAME
-
 echo "Enter MySQL root password:"
 read ROOTPASS
+
+echo "Enter username for site and database:"
+read USERNAME
 
 echo "Enter domain"
 read DOMAIN
@@ -32,8 +32,8 @@ read DOMAIN
 echo "Creating user and home directory..."
 useradd $USERNAME -m -G sftp -s "/bin/false" -d "/home/$USERNAME"
 if [ "$?" -ne 0 ]; then
-	echo "Can't add user"
-	exit 1
+    echo "Can't add user"
+    exit 1
 fi
 echo $SFTPPASS > ./tmp
 echo $SFTPPASS >> ./tmp
@@ -57,16 +57,30 @@ mkdir $WEB_DIR
 mkdir $WEB_DIR/$DOMAIN
 mkdir $WEB_DIR/$DOMAIN/htdocs
 mkdir $WEB_DIR/$DOMAIN/logs
+mkdir $WEB_DIR/$DOMAIN/backups
 mkdir $WEB_DIR/$DOMAIN/sessions
 mkdir $WEB_DIR/$DOMAIN/tmp
 
 chmod 775 $WEB_DIR/$DOMAIN -R
-chmod 775 $WEB_DIR/$DOMAIN/sessions
-chmod 775 $WEB_DIR/$DOMAIN/logs
 chmod 775 $WEB_DIR/$DOMAIN/htdocs
+chmod 775 $WEB_DIR/$DOMAIN/logs
+chmod 775 $WEB_DIR/$DOMAIN/backups
+chmod 775 $WEB_DIR/$DOMAIN/sessions
 chmod 777 $WEB_DIR/$DOMAIN/tmp
 chown $USERNAME:$USERNAME $WEB_DIR/ -R
 chown root:root "/home/$USERNAME"
+
+cp -R $CURRENT_DIR/errors_tpl $WEB_DIR/$DOMAIN/
+chmod 775 $WEB_DIR/$DOMAIN/errors_tpl
+
+for file in `find $WEB_DIR/$DOMAIN/errors_tpl -type f -name "*.html"`
+do
+    chmod 0777 $file
+    $SED -i "s|@@$DOMAIN@@|$DOMAIN|g" $file
+done
+
+
+
 
 ##############
 # Now we need to copy the virtual host template
@@ -76,6 +90,7 @@ cp $CURRENT_DIR/nginx.vhost.conf.template $CONFIG
 $SED -i "s|@@HOSTNAME@@|$DOMAIN|g" $CONFIG
 $SED -i "s|@@PATH@@|$WEB_DIR/$DOMAIN/htdocs|g" $CONFIG
 $SED -i "s|@@LOG_PATH@@|$WEB_DIR/$DOMAIN/logs|g" $CONFIG
+$SED -i "s|@@ERRORS_TPL_PATH@@|$WEB_DIR/$DOMAIN/errors_tpl|g" $CONFIG
 $SED -i "s#@@SOCKET@@#"$SOCKET $CONFIG
 
 # echo "How many FPM servers would you like by default:"
