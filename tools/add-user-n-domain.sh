@@ -15,7 +15,6 @@ TIMEZONE='Europe/Moscow'
 
 MYSQLPASS=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c12`
 SFTPPASS=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c12`
-PASSWORD=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c12`
 ##############
 
 echo "Enter MySQL root password:"
@@ -40,7 +39,7 @@ echo $SFTPPASS >> ./tmp
 cat ./tmp | passwd $USERNAME
 rm ./tmp
 
-
+HOME_DIR"/home/$USERNAME"
 WEB_DIR="/home/$USERNAME/workspace"
 
 # UNIX-сокет
@@ -48,7 +47,7 @@ WEB_DIR="/home/$USERNAME/workspace"
 # Номера портов и путей к unix-сокетам во всех пулах должны быть разными!
 SOCKET=$WEB_DIR"/"$DOMAIN"/tmp/"$USERNAME"_fpm.sock#g"
 
-SITE_CHROOT="$WEB_DIR/$DOMAIN"
+# SITE_CHROOT="$WEB_DIR/$DOMAIN"
 
 
 ##############
@@ -64,7 +63,7 @@ mkdir $WEB_DIR/$DOMAIN/tmp
 chmod 775 $WEB_DIR/$DOMAIN -R
 chmod 775 $WEB_DIR/$DOMAIN/htdocs
 chmod 775 $WEB_DIR/$DOMAIN/logs
-chmod 775 $WEB_DIR/$DOMAIN/backups
+chmod 777 $WEB_DIR/$DOMAIN/backups
 chmod 775 $WEB_DIR/$DOMAIN/sessions
 chmod 777 $WEB_DIR/$DOMAIN/tmp
 chown $USERNAME:$USERNAME $WEB_DIR/ -R
@@ -80,6 +79,24 @@ do
 done
 
 ##############
+# Для обеспечения возможности восстановить сайт в случае повреждения данных или ошибки при настройке/эксплуатации необходимо настроить резервное копирование. Резервная копия будет содержать архив каталога с файлами сайта и архив дампа базы данных. Копии будут полными, создаваться автоматически ежедневно в три часа ночи по расписанию. Копии будут храниться за последние 10 дней, более старые архивы будут удаляться.
+# Now we need to copy the vbackup_site script template
+echo "Creating backup_site script"
+BACKUP_SCRIPT=$HOME_DIR/backup_site.sh
+cp $CURRENT_DIR/backup_site.sh.template $BACKUP_SCRIPT
+$SED -i "s|@@HOSTNAME@@|$DOMAIN|g" $BACKUP_SCRIPT
+$SED -i "s|@@USERNAME@@|$USERNAME|g" $BACKUP_SCRIPT
+$SED -i "s|@@DOMAIN_PATH@@|$WEB_DIR/$DOMAIN|g" $BACKUP_SCRIPT
+$SED -i "s|@@MYSQLPASS@@|$MYSQLPASS|g" $BACKUP_SCRIPT
+
+# Владельцем файла скрипта должен быть пользователь (тот в чьем каталоге находимся и от имени которого работает окружение для сайта)
+chown -v $USERNAME:$USERNAME $BACKUP_SCRIPT
+# Делаем скрипт исполняемым
+sudo chmod a+x $BACKUP_SCRIPT
+# и добавляем его в планировщик задач crontab
+echo "0  3    * * *   $USERNAME    sh $BACKUP_SCRIPT" >> /etc/crontab
+
+##############
 # Now we need to copy the virtual host template
 echo "Creating vhost file"
 CONFIG=$NGINX_CONFIG/$DOMAIN.conf
@@ -89,6 +106,10 @@ $SED -i "s|@@PATH@@|$WEB_DIR/$DOMAIN/htdocs|g" $CONFIG
 $SED -i "s|@@LOG_PATH@@|$WEB_DIR/$DOMAIN/logs|g" $CONFIG
 $SED -i "s|@@ERRORS_TPL_PATH@@|$WEB_DIR/$DOMAIN/errors_tpl|g" $CONFIG
 $SED -i "s#@@SOCKET@@#"$SOCKET $CONFIG
+
+
+
+
 
 # echo "How many FPM servers would you like by default:"
 # read FPM_SERVERS
@@ -107,7 +128,7 @@ FPMCONF="$PHP_INI_DIR/$DOMAIN.pool.conf"
 cp $CURRENT_DIR/pool.conf.template $FPMCONF
 
 $SED -i "s/@@USER@@/$USERNAME/g" $FPMCONF
-$SED -i "s/@@HOME_DIR@@/\/home\/$USERNAME/g" $FPMCONF
+$SED -i "s/@@HOME_DIR@@/$HOME_DIR/g" $FPMCONF
 $SED -i "s/@@START_SERVERS@@/$FPM_SERVERS/g" $FPMCONF
 $SED -i "s/@@MIN_SERVERS@@/$MIN_SERVERS/g" $FPMCONF
 $SED -i "s/@@MAX_SERVERS@@/$MAX_SERVERS/g" $FPMCONF
@@ -163,7 +184,6 @@ chmod +x $WEB_DIR/$DOMAIN/htdocs/index.php
 
 echo "Done.
 User: $USERNAME
-Password: $PASSWORD
 SFTP password: $SFTPPASS
 Mysql host: 127.0.0.1
 Mysql username: $USERNAME

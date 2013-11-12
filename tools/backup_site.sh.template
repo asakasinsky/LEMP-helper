@@ -1,0 +1,29 @@
+#!/bin/bash
+
+SITENAME='@@HOSTNAME@@'                    # Domain name
+SITEUSER=@@USERNAME@@                                  # system user (php is working by him)
+SITE=@@DOMAIN_PATH@@/htdocs            # site directory
+DBUSER='@@USERNAME@@'                             # MySQL database user
+DBPASSWORD='@@MYSQLPASS@@'                      # MySQL database user password
+DBNAME='@@USERNAME@@'                             # MySQL database
+BACKUP=@@DOMAIN_PATH@@/backups       # backup directory
+OLD=10                                          # how much days to store backups
+DATE=`date '+%F_%H-%M'`                         # backups date format
+
+#echo "Backup database to $BACKUP"
+
+mkdir $BACKUP/$DATE
+cd $BACKUP/$DATE
+
+mysqldump -u $DBUSER -p$DBPASSWORD --skip-lock-tables $DBNAME > DB-$DBNAME.sql;
+
+tar -cjf ./DB-$DBNAME.tar.bz2 ./DB-$DBNAME.sql
+rm -rf ./DB-$DBNAME.sql
+
+#echo "Backup files to $BACKUP"
+
+tar -cjf ./FILES.tar.bz2 $SITE
+
+#echo "Deleting old backups from $BACKUP"
+
+find $BACKUP -mtime +$OLD -exec rm '{}' \;
