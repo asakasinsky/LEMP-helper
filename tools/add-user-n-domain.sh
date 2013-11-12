@@ -70,10 +70,10 @@ chmod 777 $WEB_DIR/$DOMAIN/tmp
 chown $USERNAME:$USERNAME $WEB_DIR/ -R
 chown root:root "/home/$USERNAME"
 
-cp -R $CURRENT_DIR/errors_tpl $WEB_DIR/$DOMAIN/
+cp -R $CURRENT_DIR/errors_tpl $WEB_DIR/$DOMAIN/htdocs
 chmod 775 $WEB_DIR/$DOMAIN/errors_tpl
 
-for file in `find $WEB_DIR/$DOMAIN/errors_tpl -type f -name "*.html"`
+for file in `find $WEB_DIR/$DOMAIN/htdocs/errors_tpl -type f -name "*.html"`
 do
     chmod 0777 $file
     $SED -i "s|@@$DOMAIN@@|$DOMAIN|g" $file
