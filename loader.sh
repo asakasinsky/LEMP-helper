@@ -1,4 +1,3 @@
-
 wget https://github.com/asakasinsky/LEMP-helper/archive/master.tar.gz 
 
 tar xpvf master.tar.gz && mv LEMP-helper-master lemp-helper
@@ -8,6 +7,7 @@ do
   chmod +x $file 
 done
 
+rm master.tar.gz
 rm lemp-helper/loader.sh
 
 # Ought to do the trick. $0 is a magic variable for the full path of the executed script.
