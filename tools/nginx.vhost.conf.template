@@ -44,36 +44,30 @@ server {
         include        fastcgi_params;
     }
 
-    error_page 400 /error_pages/400.html;
-    error_page 401 /error_pages/401.html;
-    error_page 402 /error_pages/402.html;
-    error_page 403 /error_pages/403.html;
-    error_page 404 /error_pages/404.html;
-    error_page 405 /error_pages/405.html;
-    error_page 406 /error_pages/406.html;
-    error_page 407 /error_pages/407.html;
-    error_page 408 /error_pages/408.html;
-    error_page 409 /error_pages/409.html;
-    error_page 410 /error_pages/410.html;
-    error_page 411 /error_pages/411.html;
-    error_page 412 /error_pages/412.html;
-    error_page 413 /error_pages/413.html;
-    error_page 414 /error_pages/414.html;
-    error_page 415 /error_pages/415.html;
-    error_page 416 /error_pages/416.html;
-    error_page 417 /error_pages/417.html;
-    error_page 500 /error_pages/500.html;
-    error_page 501 /error_pages/501.html;
-    error_page 502 /error_pages/502.html;
-    error_page 503 /error_pages/503.html;
-    error_page 504 /error_pages/504.html;
-    error_page 505 /error_pages/505.html;
+    error_page 400 /errors_tpl/400.html;
+    error_page 401 /errors_tpl/401.html;
+    error_page 402 /errors_tpl/402.html;
+    error_page 403 /errors_tpl/403.html;
+    error_page 404 /errors_tpl/404.html;
+    error_page 405 /errors_tpl/405.html;
+    error_page 406 /errors_tpl/406.html;
+    error_page 407 /errors_tpl/407.html;
+    error_page 408 /errors_tpl/408.html;
+    error_page 409 /errors_tpl/409.html;
+    error_page 410 /errors_tpl/410.html;
+    error_page 411 /errors_tpl/411.html;
+    error_page 412 /errors_tpl/412.html;
+    error_page 413 /errors_tpl/413.html;
+    error_page 414 /errors_tpl/414.html;
+    error_page 415 /errors_tpl/415.html;
+    error_page 416 /errors_tpl/416.html;
+    error_page 417 /errors_tpl/417.html;
+    error_page 500 /errors_tpl/500.html;
+    error_page 501 /errors_tpl/501.html;
+    error_page 502 /errors_tpl/502.html;
+    error_page 503 /errors_tpl/503.html;
+    error_page 504 /errors_tpl/504.html;
+    error_page 505 /errors_tpl/505.html;
 
-    location ~ [4-5][0-9][0-9].html
-    {
-        root   "@@ERRORS_TPL_PATH@@";
-        allow all;
-        internal;
-    }
 
 }

@@ -75,12 +75,9 @@ chmod 775 $WEB_DIR/$DOMAIN/errors_tpl
 
 for file in `find $WEB_DIR/$DOMAIN/htdocs/errors_tpl -type f -name "*.html"`
 do
+    $SED -i "s|@@DOMAIN@@|$DOMAIN|g" $file
     chmod 0777 $file
-    $SED -i "s|@@$DOMAIN@@|$DOMAIN|g" $file
 done
-
-
-
 
 ##############
 # Now we need to copy the virtual host template
