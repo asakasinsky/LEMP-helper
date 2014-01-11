@@ -7,6 +7,9 @@ echo "Enter username to delete:";
 read USERNAME;
 
 
+/etc/init.d/nginx stop;
+/etc/init.d/php5-fpm stop;
+
 cd "/home/$USERNAME/workspace"
 
 for directory in *
@@ -24,6 +27,8 @@ cd
 
 mysql -uroot --password=$ROOTPASS -e "DROP USER '$USERNAME'@'localhost'";
 mysql -uroot --password=$ROOTPASS -e "DROP DATABASE \`$USERNAME\`";
-service nginx reload;
-service php5-fpm reload;
+
+/etc/init.d/nginx start;
+/etc/init.d/php5-fpm start;
+
 userdel -rf $USERNAME;
