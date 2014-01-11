@@ -314,5 +314,8 @@ php_admin_value[date.timezone] = Europe/Moscow
 php_admin_value[disable_functions] = exec,passthru,shell_exec,system,proc_open,popen,curl_multi_exec,parse_ini_file,show_source,stream_socket_client,stream_set_write_buffer,stream_socket_sendto,highlight_file,com_load_typelib
 php_admin_value[cgi.fix_pathinfo] = 0
 php_admin_value[apc.cache_by_default] = 0
-php_admin_value[error_reporting] = E_ALL & ~E_DEPRECATED & E_WARNING
 
+
+php_admin_value[error_reporting] = E_ALL & ~E_DEPRECATED & ~E_WARNING ^ E_NOTICE
+php_admin_flag[display_errors] = on
+php_admin_flag[display_startup_errors] = on
