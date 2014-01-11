@@ -1,5 +1,5 @@
 #!/bin/bash
- 
+
 echo "Enter MySQL root password:";
 read ROOTPASS;
 
