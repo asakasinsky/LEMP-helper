@@ -60,22 +60,22 @@ mkdir $WEB_DIR/$DOMAIN/backups
 mkdir $WEB_DIR/$DOMAIN/sessions
 mkdir $WEB_DIR/$DOMAIN/tmp
 
-chmod 775 $WEB_DIR/$DOMAIN -R
-chmod 775 $WEB_DIR/$DOMAIN/htdocs
-chmod 775 $WEB_DIR/$DOMAIN/logs
-chmod 777 $WEB_DIR/$DOMAIN/backups
-chmod 775 $WEB_DIR/$DOMAIN/sessions
-chmod 777 $WEB_DIR/$DOMAIN/tmp
+chmod 0775 $WEB_DIR/$DOMAIN -R
+chmod 0775 $WEB_DIR/$DOMAIN/htdocs
+chmod 0775 $WEB_DIR/$DOMAIN/logs
+chmod 0777 $WEB_DIR/$DOMAIN/backups
+chmod 0775 $WEB_DIR/$DOMAIN/sessions
+chmod 0777 $WEB_DIR/$DOMAIN/tmp
 chown $USERNAME:$USERNAME $WEB_DIR/ -R
 chown root:root "/home/$USERNAME"
 
 cp -R $CURRENT_DIR/errors_tpl $WEB_DIR/$DOMAIN/htdocs
-chmod 775 $WEB_DIR/$DOMAIN/errors_tpl
+chmod 0775 $WEB_DIR/$DOMAIN/htdocs/errors_tpl
 
 for file in `find $WEB_DIR/$DOMAIN/htdocs/errors_tpl -type f -name "*.html"`
 do
     $SED -i "s|@@DOMAIN@@|$DOMAIN|g" $file
-    chmod 0777 $file
+    chmod 0664 $file
 done
 
 ##############
@@ -139,7 +139,7 @@ $SED -i "s#@@SOCKET@@#"$SOCKET $FPMCONF
 $SED -i "s|@@LOG_PATH@@|$WEB_DIR/$DOMAIN/logs|g" $FPMCONF
 $SED -i "s|@@TMP_DIR@@|$WEB_DIR/$DOMAIN/tmp|g" $FPMCONF
 
-chmod 600 $CONFIG
+chmod 0600 $CONFIG
 
 ln -s $CONFIG $NGINX_SITES_ENABLED/$DOMAIN.conf
 
