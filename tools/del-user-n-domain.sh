@@ -8,6 +8,7 @@ read USERNAME;
 
 for directory in `find /home/$USERNAME/workspace -type d`
 do
+    echo "delete $directory"
     rm -f "/etc/nginx/sites-enabled/$directory.conf";
     rm -f "/etc/nginx/sites-available/$directory.conf";
     rm -f "/etc/php5/fpm/pool.d/$directory.conf";
