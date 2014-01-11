@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo -e "\e[1;32m >> LEMP Helper starting...................................."
 
 
 # Modify the following to match your system
@@ -182,12 +183,15 @@ chmod +x $WEB_DIR/$DOMAIN/htdocs/index.php
 
 
 
-echo "Done.
-User: $USERNAME
+echo "User: $USERNAME
 SFTP password: $SFTPPASS
 Mysql host: 127.0.0.1
 Mysql username: $USERNAME
 Mysql password: $MYSQLPASS
 Mysql database: $USERNAME" > /home/$USERNAME/pass.txt
 
+echo -e "\e[0m >> Done..................................................."
+
 cat /home/$USERNAME/pass.txt
+
+
