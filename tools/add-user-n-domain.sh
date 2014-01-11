@@ -39,7 +39,7 @@ echo $SFTPPASS >> ./tmp
 cat ./tmp | passwd $USERNAME
 rm ./tmp
 
-HOME_DIR"/home/$USERNAME"
+HOME_DIR="/home/$USERNAME"
 WEB_DIR="/home/$USERNAME/workspace"
 
 # UNIX-сокет
