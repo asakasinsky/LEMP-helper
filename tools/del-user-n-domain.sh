@@ -7,15 +7,17 @@ echo "Enter username to delete:";
 read USERNAME;
 
 
-cd /home/$USERNAME/workspace
+cd "/home/$USERNAME/workspace"
 
-for directory in `find /home/$USERNAME/workspace -type d`
+for directory in *
 do
-    rm -f "/etc/nginx/sites-enabled/$directory.conf";
-    rm -f "/etc/nginx/sites-available/$directory.conf";
-    rm -f "/etc/php5/fpm/pool.d/$directory.conf";
-    # find /var/log/nginx/ -type f -name "$USERNAME*" -exec rm '{}';
-    # find /var/log/nginx/ -type f -name "$directory*" -exec rm '{}';
+    if [ -d "$directory" ];then
+        rm -f "/etc/nginx/sites-enabled/$directory.conf";
+        rm -f "/etc/nginx/sites-available/$directory.conf";
+        rm -f "/etc/php5/fpm/pool.d/$directory.conf";
+        # find /var/log/nginx/ -type f -name "$USERNAME*" -exec rm '{}';
+        # find /var/log/nginx/ -type f -name "$directory*" -exec rm '{}';
+      fi
 done
 
 cd
