@@ -90,7 +90,7 @@ $SED -i "s|@@DOMAIN_PATH@@|$WEB_DIR/$DOMAIN|g" $BACKUP_SCRIPT
 $SED -i "s|@@MYSQLPASS@@|$MYSQLPASS|g" $BACKUP_SCRIPT
 
 # Владельцем файла скрипта должен быть пользователь (тот в чьем каталоге находимся и от имени которого работает окружение для сайта)
-chown -v $USERNAME:$USERNAME $BACKUP_SCRIPT
+chown $USERNAME:$USERNAME $BACKUP_SCRIPT
 # Делаем скрипт исполняемым
 sudo chmod a+x $BACKUP_SCRIPT
 # и добавляем его в планировщик задач crontab
