@@ -22,8 +22,8 @@ done
 
 cd
 
-mysql -uroot --password=$ROOTPASS -e "DROP USER $USERNAME@localhost";
-mysql -uroot --password=$ROOTPASS -e "DROP DATABASE $USERNAME";
+mysql -uroot --password=$ROOTPASS -e "DROP USER '$USERNAME'@'localhost'";
+mysql -uroot --password=$ROOTPASS -e "DROP DATABASE \`$USERNAME\`";
 service nginx reload;
 service php5-fpm reload;
 userdel -rf $USERNAME;
