@@ -6,6 +6,8 @@ server {
 
     # include     nginx-bp/bootstrap/default.conf;
 
+    # temporary solution till an «nginx-bp/bootstrap/default.conf»
+    # will be written and tested
     include         nginx-bp/ports/http.conf;
     include         nginx-bp/locations/system.conf;
     include         nginx-bp/locations/vcs.conf;
@@ -29,30 +31,19 @@ server {
     include     nginx-bp/limits/user_agent.conf;
 
     location / {
-        try_files $uri $uri/ @clean_url;
-    }
-
-    location @clean_url {
-        rewrite ^/(.*)$ /index.php$uri$is_args$args;
-        # try_files $uri $uri/ /index.php$uri?$args;
+        root "@@PATH@@";
+        try_files $uri $uri/ /index.php?/$request_uri;
     }
 
     location ~ "^(.+\.php)($|/)" {
-    # location ~ \.php$ {
         fastcgi_split_path_info ^(.+\.php)(.*)$;
-
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_param SCRIPT_NAME $fastcgi_script_name;
         fastcgi_param PATH_INFO $fastcgi_path_info;
         fastcgi_param SERVER_NAME $host;
 
-        fastcgi_buffer_size 128k;
-        fastcgi_buffers 4 256k;
-        fastcgi_busy_buffers_size 256k;
-
         if ($uri !~ "^/uploads/") {
             fastcgi_pass   unix:@@SOCKET@@;
-            # fastcgi_pass 127.0.0.1:9000;
         }
         include        fastcgi_params;
     }
