@@ -138,6 +138,7 @@ $SED -i "s/@@MAX_CHILDS@@/$MAX_CHILDS/g" $FPMCONF
 $SED -i "s#@@SOCKET@@#"$SOCKET $FPMCONF
 
 $SED -i "s|@@LOG_PATH@@|$WEB_DIR/$DOMAIN/logs|g" $FPMCONF
+$SED -i "s|@@SESSION_PATH@@|$WEB_DIR/$DOMAIN/sessions|g" $FPMCONF
 $SED -i "s|@@TMP_DIR@@|$WEB_DIR/$DOMAIN/tmp|g" $FPMCONF
 
 chmod 0600 $CONFIG

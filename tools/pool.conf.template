@@ -303,7 +303,7 @@ chdir = /
 ;php_admin_value[error_log] = /var/log/fpm-php.www.log
 ;php_admin_flag[log_errors] = on
 ;php_admin_value[memory_limit] = 32M
-php_admin_value[session.save_path] = "@@HOME_DIR@@/sessions"
+php_admin_value[session.save_path] = "@@SESSION_PATH@@"
 php_admin_value[open_basedir] = "@@HOME_DIR@@"
 
 php_admin_value[upload_tmp_dir] = @@TMP_DIR@@
