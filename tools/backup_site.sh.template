@@ -7,7 +7,7 @@ DBUSER='@@USERNAME@@'                             # MySQL database user
 DBPASSWORD='@@MYSQLPASS@@'                      # MySQL database user password
 DBNAME='@@USERNAME@@'                             # MySQL database
 BACKUP=@@DOMAIN_PATH@@/backups       # backup directory
-OLD=10                                          # how much days to store backups
+OLD=3                                          # how much days to store backups
 DATE=`date '+%F_%H-%M'`                         # backups date format
 
 #echo "Backup database to $BACKUP"
@@ -25,5 +25,7 @@ rm -rf ./DB-$DBNAME.sql
 tar -cjf ./FILES.tar.bz2 $SITE
 
 #echo "Deleting old backups from $BACKUP"
-
-find $BACKUP -mtime +$OLD -exec rm '{}' \;
+OLD=$(( OLD - 1 ))
+# Working ONLY at 1 (first) depth level, else script removing all,
+# including $BACKUP directory
+find $BACKUP -maxdepth 1 -mindepth 1 -mtime +$OLD -exec rm -rf '{}' \;
