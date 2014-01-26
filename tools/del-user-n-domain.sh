@@ -31,4 +31,7 @@ mysql -uroot --password=$ROOTPASS -e "DROP DATABASE \`$USERNAME\`";
 /etc/init.d/nginx start;
 service php5-fpm start;
 
+# Remove cron jobs
+sed --in-place "/ $USERNAME /d" /etc/crontab
+
 userdel -rf $USERNAME;
