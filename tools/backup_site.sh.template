@@ -26,6 +26,6 @@ tar -cjf ./FILES.tar.bz2 $SITE
 
 #echo "Deleting old backups from $BACKUP"
 OLD=$(( OLD - 1 ))
-# Working ONLY at 1 (first) depth level, else script removing all,
+# Working ONLY at 1 (first) depth level, else script will remove all,
 # including $BACKUP directory
 find $BACKUP -maxdepth 1 -mindepth 1 -mtime +$OLD -exec rm -rf '{}' \;
