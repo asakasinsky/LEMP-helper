@@ -28,6 +28,16 @@ echo "Enter domain"
 read DOMAIN
 
 ##############
+GROUP='sftp'
+
+if id -g $GROUP >/dev/null 2>&1; then
+    echo 'Group sftp exist'
+else
+    echo 'Creating sftp group'
+    groupadd $GROUP
+fi
+
+
 
 echo "Creating user and home directory..."
 useradd $USERNAME -m -G sftp -s "/bin/false" -d "/home/$USERNAME"
