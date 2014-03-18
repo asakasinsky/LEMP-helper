@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ "$(whoami)" != "root" ]; then
+        echo "Sorry, script must be run with 'sudo'."
+        exit 1
+fi
+
 echo -e "\e[1;32m >> LEMP Helper starting...................................."
 
 
