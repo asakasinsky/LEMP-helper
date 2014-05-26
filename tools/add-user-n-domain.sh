@@ -74,6 +74,7 @@ mkdir $WEB_DIR/$DOMAIN/htdocs
 mkdir $WEB_DIR/$DOMAIN/logs
 mkdir $WEB_DIR/$DOMAIN/backups
 mkdir $WEB_DIR/$DOMAIN/sessions
+mkdir $WEB_DIR/$DOMAIN/cache
 mkdir $WEB_DIR/$DOMAIN/tmp
 
 chmod 0775 $WEB_DIR/$DOMAIN -R
@@ -81,6 +82,7 @@ chmod 0775 $WEB_DIR/$DOMAIN/htdocs
 chmod 0775 $WEB_DIR/$DOMAIN/logs
 chmod 0777 $WEB_DIR/$DOMAIN/backups
 chmod 0775 $WEB_DIR/$DOMAIN/sessions
+chmod 0775 $WEB_DIR/$DOMAIN/cache
 chmod 0777 $WEB_DIR/$DOMAIN/tmp
 chown $USERNAME:$USERNAME $WEB_DIR/ -R
 chown root:root "/home/$USERNAME"
