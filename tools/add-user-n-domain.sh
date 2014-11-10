@@ -85,7 +85,8 @@ chmod 0775 $WEB_DIR/$DOMAIN/sessions
 chmod 0775 $WEB_DIR/$DOMAIN/cache
 chmod 0777 $WEB_DIR/$DOMAIN/tmp
 chown $USERNAME:$USERNAME $WEB_DIR/ -R
-chown root:root "/home/$USERNAME"
+sudo chown root:root "/home/$USERNAME"
+sudo chmod go-w "/home/$USERNAME"
 
 cp -R $CURRENT_DIR/errors_tpl $WEB_DIR/$DOMAIN/htdocs
 chmod 0775 $WEB_DIR/$DOMAIN/htdocs/errors_tpl
